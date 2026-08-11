@@ -1,0 +1,100 @@
+# ================================
+# Python
+# ================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Python virtual environments
+.venv/
+.venv312/
+venv/
+env/
+ENV/
+
+# ================================
+# IDE / Editors
+# ================================
+.vscode/
+.idea/
+
+# ================================
+# OS
+# ================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ================================
+# Environment / Secrets
+# ================================
+.env
+.env.*
+!.env.example
+
+# ================================
+# Flask uploads
+# ================================
+uploads/*
+!uploads/.gitkeep
+
+# ================================
+# TensorFlow / Keras model files
+# ================================
+# Large model files should NOT be committed directly
+models/*
+!models/.gitkeep
+
+*.keras
+*.h5
+*.weights.h5
+*.ckpt
+*.pb
+
+# ================================
+# TensorFlow generated files
+# ================================
+checkpoint
+checkpoints/
+logs/
+tensorboard_logs/
+
+# ================================
+# Jupyter
+# ================================
+.ipynb_checkpoints/
+
+# ================================
+# Temporary files
+# ================================
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# ================================
+# Flask
+# ================================
+instance/
+
+# ================================
+# Build / distribution
+# ================================
+build/
+dist/
+.eggs/
+
+# ================================
+# Local test files
+# ================================
+test.jpg
+test.png
+test.jpeg

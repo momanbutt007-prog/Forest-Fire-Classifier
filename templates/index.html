@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForestGuard AI | Forest Fire Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <header class="navbar">
+        <a class="brand" href="{{ url_for('index') }}">
+            <span class="brand-mark">🔥</span>
+            <span>Forest<span class="brand-accent">Guard</span> AI</span>
+        </a>
+        <span class="model-badge">EfficientNetB2 • Keras</span>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">AI-POWERED FOREST MONITORING</p>
+                <h1>Detect forest fires<br><span>before they spread.</span></h1>
+                <p class="hero-text">
+                    Upload a forest image and let the trained deep-learning model
+                    classify it as <strong>Fire</strong> or <strong>No Fire</strong>.
+                </p>
+                <div class="stats">
+                    <div><strong>96.83%</strong><span>Test Accuracy</span></div>
+                    <div><strong>98.67%</strong><span>Fire Recall</span></div>
+                    <div><strong>99.60%</strong><span>ROC-AUC</span></div>
+                </div>
+            </div>
+
+            <div class="upload-card">
+                <div class="card-header">
+                    <div>
+                        <p class="card-kicker">IMAGE ANALYSIS</p>
+                        <h2>Upload an image</h2>
+                    </div>
+                    <span class="status-dot {% if model_ready %}online{% else %}offline{% endif %}">
+                        {% if model_ready %}READY{% else %}MODEL MISSING{% endif %}
+                    </span>
+                </div>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                    <label class="drop-zone" id="dropZone" for="imageInput">
+                        <div class="upload-icon">↥</div>
+                        <h3>Drop your image here</h3>
+                        <p>or <span>browse from your computer</span></p>
+                        <small>JPG, JPEG, PNG or WEBP • Max 10 MB</small>
+                        <input type="file" id="imageInput" name="image"
+                               accept=".jpg,.jpeg,.png,.webp,image/*" hidden required>
+                    </label>
+
+                    <div class="preview-wrap" id="previewWrap">
+                        <img id="previewImage" alt="Selected image preview">
+                        <button type="button" class="remove-btn" id="removeBtn">×</button>
+                    </div>
+
+                    <button class="analyze-btn" id="analyzeBtn" type="submit" disabled>
+                        <span>Analyze Image</span>
+                        <span>→</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        {% if result %}
+        <section class="result-section">
+            <div class="result-image-card">
+                <img src="{{ image_url }}" alt="Uploaded forest image">
+            </div>
+
+            <div class="result-card {{ result.result_class }}">
+                <p class="eyebrow">MODEL RESULT</p>
+                <div class="result-title">
+                    <span class="result-icon">{{ result.icon }}</span>
+                    <div>
+                        <h2>{{ result.label }}</h2>
+                        <p>{{ result.status }}</p>
+                    </div>
+                </div>
+
+                <div class="confidence-row">
+                    <div>
+                        <span>Confidence</span>
+                        <strong>{{ "%.2f"|format(result.confidence) }}%</strong>
+                    </div>
+                    <div class="confidence-track">
+                        <div style="width: {{ result.confidence }}%"></div>
+                    </div>
+                </div>
+
+                <div class="probabilities">
+                    <div>
+                        <span>🔥 Fire probability</span>
+                        <strong>{{ "%.2f"|format(result.fire_probability) }}%</strong>
+                    </div>
+                    <div>
+                        <span>🌲 No Fire probability</span>
+                        <strong>{{ "%.2f"|format(result.no_fire_probability) }}%</strong>
+                    </div>
+                </div>
+
+                <p class="threshold-note">
+                    Decision threshold: {{ "%.2f"|format(threshold) }}
+                </p>
+            </div>
+        </section>
+        {% endif %}
+
+        <section class="how-section">
+            <div>
+                <p class="eyebrow">HOW IT WORKS</p>
+                <h2>Simple. Fast. AI-powered.</h2>
+            </div>
+            <div class="steps">
+                <div class="step"><span>01</span><h3>Upload</h3><p>Select a forest image from your device.</p></div>
+                <div class="step"><span>02</span><h3>Analyze</h3><p>EfficientNetB2 processes the image.</p></div>
+                <div class="step"><span>03</span><h3>Detect</h3><p>Get Fire/No Fire with confidence.</p></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>ForestGuard AI • Forest Fire Classification System</p>
+        <p>Built with Flask + TensorFlow + Keras</p>
+    </footer>
+
+    <script>
+        const input = document.getElementById("imageInput");
+        const dropZone = document.getElementById("dropZone");
+        const previewWrap = document.getElementById("previewWrap");
+        const previewImage = document.getElementById("previewImage");
+        const removeBtn = document.getElementById("removeBtn");
+        const analyzeBtn = document.getElementById("analyzeBtn");
+        const form = document.getElementById("uploadForm");
+
+        function showPreview(file) {
+            if (!file) return;
+            const valid = ["image/jpeg", "image/png", "image/webp"];
+            if (!valid.includes(file.type)) {
+                alert("Please choose a JPG, JPEG, PNG, or WEBP image.");
+                input.value = "";
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                previewImage.src = event.target.result;
+                previewWrap.classList.add("visible");
+                dropZone.classList.add("has-preview");
+                analyzeBtn.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        input.addEventListener("change", () => showPreview(input.files[0]));
+
+        ["dragenter", "dragover"].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.add("dragging");
+            });
+        });
+
+        ["dragleave", "drop"].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove("dragging");
+            });
+        });
+
+        dropZone.addEventListener("drop", (e) => {
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                input.files = e.dataTransfer.files;
+                showPreview(file);
+            }
+        });
+
+        removeBtn.addEventListener("click", () => {
+            input.value = "";
+            previewImage.src = "";
+            previewWrap.classList.remove("visible");
+            dropZone.classList.remove("has-preview");
+            analyzeBtn.disabled = true;
+        });
+
+        form.addEventListener("submit", () => {
+            analyzeBtn.disabled = true;
+            analyzeBtn.innerHTML = "<span>Analyzing...</span><span class='spinner'></span>";
+        });
+    </script>
+</body>
+</html>
