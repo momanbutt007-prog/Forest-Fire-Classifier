@@ -98,3 +98,10 @@ dist/
 test.jpg
 test.png
 test.jpeg
+
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Logs
+*.log
