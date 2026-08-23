@@ -45,17 +45,7 @@ desktop.ini
 uploads/*
 !uploads/.gitkeep
 
-# ================================
-# TensorFlow / Keras model files
-# ================================
-# Large model files should NOT be committed directly
-models/*
-!models/.gitkeep
 
-*.h5
-*.weights.h5
-*.ckpt
-*.pb
 
 # ================================
 # TensorFlow generated files
