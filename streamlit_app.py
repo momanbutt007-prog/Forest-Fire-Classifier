@@ -26,101 +26,234 @@ NO_FIRE_THRESHOLD = 0.70
 
 
 # ============================================================
-# CUSTOM STREAMLIT STYLING
+# CUSTOM STREAMLIT STYLING — Forest Green + Cream palette
 # Python only - no external CSS file
 # ============================================================
 
 st.markdown(
     """
     <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+        html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif !important; }
+
+        /* ---------- App background: deep forest green ---------- */
         .stApp {
             background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(255, 100, 20, 0.12),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    135deg,
-                    #0b0f0d 0%,
-                    #111814 50%,
-                    #0a0d0b 100%
-                );
+                radial-gradient(circle at 88% -5%, rgba(255, 130, 60, 0.08) 0%, transparent 38%),
+                radial-gradient(circle at 8% 10%, rgba(214, 197, 150, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 105%, rgba(74, 143, 90, 0.10) 0%, transparent 55%),
+                linear-gradient(160deg, #0a1510 0%, #0e1e15 45%, #0a140f 100%);
+            color: #f2ead9;
         }
 
         [data-testid="stHeader"] {
             background: transparent;
         }
 
+        /* ---------- Sidebar ---------- */
         [data-testid="stSidebar"] {
-            background: #0d130f;
-            border-right: 1px solid rgba(255,255,255,0.08);
+            background:
+                radial-gradient(circle at 30% 0%, rgba(74,143,90,0.10), transparent 45%),
+                radial-gradient(circle at 90% 40%, rgba(214,197,150,0.06), transparent 50%),
+                linear-gradient(180deg, #0c1a13 0%, #08120d 100%);
+            border-right: 1px solid rgba(214,197,150,0.10);
         }
 
+        [data-testid="stSidebar"] * { color: #f2ead9 !important; }
+
+        .sb-logo-wrap { text-align: center; padding: 0.6rem 0 0.4rem 0; }
+
+        .sb-logo-badge {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 0.55rem auto;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.85rem;
+            background: linear-gradient(135deg, #1f5c39, #4a8f5a 55%, #d6c596);
+            box-shadow: 0 10px 26px rgba(31,92,57,0.40);
+        }
+
+        .sb-title {
+            font-size: 1.22rem;
+            font-weight: 800;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 0.12rem;
+            color: #f2ead9;
+        }
+
+        .sb-subtitle {
+            font-size: 0.7rem;
+            color: rgba(242,234,217,0.55) !important;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .sb-section-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.92rem;
+            margin: 0.6rem 0 0.6rem 0;
+            color: #f2ead9 !important;
+        }
+
+        .sb-section-label .icon-chip-sm {
+            width: 25px;
+            height: 25px;
+            min-width: 25px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            background: linear-gradient(135deg, rgba(74,143,90,0.30), rgba(214,197,150,0.25));
+            border: 1px solid rgba(242,234,217,0.14);
+        }
+
+        .sb-card {
+            background: rgba(214,197,150,0.045);
+            border: 1px solid rgba(214,197,150,0.14);
+            border-radius: 14px;
+            padding: 0.9rem 1rem;
+            margin-bottom: 0.6rem;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+        }
+
+        .sb-card p {
+            margin: 0.25rem 0;
+            font-size: 0.86rem;
+            color: rgba(242,234,217,0.85) !important;
+        }
+
+        .sb-card b { color: #d6c596 !important; }
+
+        .sb-status-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            border-radius: 12px;
+            padding: 0.6rem 0.85rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.86rem;
+            font-weight: 600;
+        }
+
+        .sb-status-online {
+            background: rgba(74,143,90,0.14);
+            border: 1px solid rgba(74,143,90,0.4);
+            color: #8fd6a4 !important;
+        }
+
+        .sb-status-error {
+            background: rgba(255,90,50,0.12);
+            border: 1px solid rgba(255,90,50,0.35);
+            color: #ffab8a !important;
+        }
+
+        .sb-class-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            background: rgba(214,197,150,0.04);
+            border: 1px solid rgba(214,197,150,0.12);
+            border-radius: 10px;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.4rem;
+            font-size: 0.88rem;
+        }
+
+        /* ---------- Hero ---------- */
         .hero {
-            padding: 35px 10px 20px 10px;
+            padding: 35px 10px 25px 10px;
             text-align: center;
+            border-radius: 22px;
+            background: linear-gradient(135deg, rgba(31,92,57,0.35), rgba(214,197,150,0.08));
+            border: 1px solid rgba(214,197,150,0.12);
+            margin-bottom: 1.4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(214,197,150,0.06);
+            border-radius: 50%;
         }
 
         .hero-icon {
-            font-size: 70px;
+            font-size: 68px;
             margin-bottom: 5px;
         }
 
         .hero-title {
-            font-size: 48px;
+            font-size: 46px;
             font-weight: 800;
-            letter-spacing: -2px;
-            color: white;
+            letter-spacing: -1.5px;
+            color: #f6f1e4;
             margin: 0;
         }
 
         .hero-title span {
-            color: #ff6422;
+            color: #ff8342;
         }
 
         .hero-subtitle {
-            color: #aab4ad;
-            font-size: 17px;
+            color: #cfc3a3;
+            font-size: 16px;
             margin-top: 8px;
         }
 
         .status {
             display: inline-block;
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 30px;
-            background: rgba(40, 190, 100, 0.12);
-            border: 1px solid rgba(40, 190, 100, 0.3);
-            color: #6ee7a1;
+            background: rgba(74, 190, 100, 0.14);
+            border: 1px solid rgba(74, 190, 100, 0.35);
+            color: #8fe6ab;
             font-size: 13px;
             font-weight: 700;
             margin-top: 15px;
+            letter-spacing: 0.5px;
         }
 
+        /* ---------- Upload / result cards ---------- */
         .upload-card {
             padding: 25px;
             border-radius: 20px;
-            background: rgba(255,255,255,0.035);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(214,197,150,0.035);
+            border: 1px solid rgba(214,197,150,0.12);
         }
 
         .result-card {
             padding: 28px;
             border-radius: 22px;
             text-align: center;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(214,197,150,0.035);
+            border: 1px solid rgba(214,197,150,0.12);
             margin-top: 15px;
         }
 
         .result-fire {
-            border: 1px solid rgba(255,80,40,0.45);
-            background: rgba(255,70,30,0.08);
+            border: 1px solid rgba(255,110,60,0.5);
+            background: linear-gradient(160deg, rgba(255,90,40,0.12), rgba(214,197,150,0.03));
         }
 
         .result-safe {
-            border: 1px solid rgba(70,200,120,0.4);
-            background: rgba(50,180,100,0.07);
+            border: 1px solid rgba(74,190,100,0.45);
+            background: linear-gradient(160deg, rgba(60,170,90,0.12), rgba(214,197,150,0.03));
         }
 
         .result-icon {
@@ -130,50 +263,97 @@ st.markdown(
         .result-title {
             font-size: 34px;
             font-weight: 800;
-            color: white;
+            color: #f6f1e4;
             margin-top: 5px;
         }
 
         .result-status {
-            color: #b8c2bc;
+            color: #d8cdb4;
             font-size: 16px;
         }
 
+        /* ---------- Metric cards ---------- */
         .metric-card {
             padding: 18px;
             border-radius: 16px;
-            background: rgba(255,255,255,0.035);
-            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(214,197,150,0.035);
+            border: 1px solid rgba(214,197,150,0.12);
             text-align: center;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.25);
         }
 
         .metric-label {
-            color: #8f9b94;
+            color: #b7ab8d;
             font-size: 13px;
+            letter-spacing: 0.5px;
         }
 
         .metric-value {
-            color: white;
+            color: #f6f1e4;
             font-size: 25px;
             font-weight: 750;
             margin-top: 4px;
+            font-family: 'Poppins', sans-serif;
         }
+
+        /* ---------- Native st.metric restyle ---------- */
+        div[data-testid="stMetric"] {
+            background: rgba(214,197,150,0.035);
+            border: 1px solid rgba(214,197,150,0.12);
+            border-radius: 16px;
+            padding: 0.9rem 1rem 0.6rem 1rem;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+        }
+
+        div[data-testid="stMetricLabel"] { color: #cfc3a3 !important; }
+        div[data-testid="stMetricValue"] { color: #f6f1e4 !important; font-family: 'Poppins', sans-serif; }
+
+        /* ---------- Progress bar ---------- */
+        div[data-testid="stProgress"] > div > div {
+            background: linear-gradient(90deg, #4a8f5a, #d6c596) !important;
+        }
+
+        /* ---------- File uploader ---------- */
+        div[data-testid="stFileUploaderDropzone"] {
+            background:
+                radial-gradient(circle at 20% 15%, rgba(74,143,90,0.10), transparent 55%),
+                radial-gradient(circle at 80% 85%, rgba(214,197,150,0.08), transparent 55%),
+                rgba(214,197,150,0.03);
+            border: 2px dashed rgba(74,143,90,0.5);
+            border-radius: 16px;
+        }
+
+        div[data-testid="stFileUploaderDropzone"]:hover {
+            border-color: rgba(214,197,150,0.6);
+        }
+
+        div[data-testid="stFileUploaderDropzone"] button {
+            background: linear-gradient(120deg, #1f5c39, #4a8f5a) !important;
+            color: #f6f1e4 !important;
+            border: none !important;
+            border-radius: 10px !important;
+            font-weight: 600 !important;
+        }
+
+        /* ---------- Buttons ---------- */
+        div.stButton > button {
+            border-radius: 12px;
+            font-weight: 700;
+            background: linear-gradient(120deg, #1f5c39, #4a8f5a);
+            color: #f6f1e4;
+            border: none;
+            box-shadow: 0 8px 20px rgba(31,92,57,0.35);
+        }
+
+        hr { border-color: rgba(214,197,150,0.14) !important; }
 
         .footer {
             text-align: center;
-            color: #68736c;
+            color: #96a695;
             font-size: 13px;
             padding: 35px 0 10px;
         }
 
-        div.stButton > button {
-            border-radius: 12px;
-            font-weight: 700;
-        }
-
-        div[data-testid="stFileUploader"] {
-            border-radius: 16px;
-        }
     </style>
     """,
     unsafe_allow_html=True,
@@ -234,44 +414,78 @@ except Exception as exc:
 # ============================================================
 
 with st.sidebar:
-    st.markdown("## 🔥 Forest Fire AI")
 
-    st.markdown("---")
+    st.markdown(
+        """
+        <div class="sb-logo-wrap">
+            <div class="sb-logo-badge">🔥</div>
+            <div class="sb-title">Forest Fire AI</div>
+            <div class="sb-subtitle">Wildfire Detection Engine</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    st.markdown("### 🤖 Model")
+    st.divider()
+
+    st.markdown(
+        '<div class="sb-section-label"><span class="icon-chip-sm">🤖</span> Model</div>',
+        unsafe_allow_html=True,
+    )
 
     if model_ready:
-        st.success("Model loaded")
+        st.markdown(
+            '<div class="sb-status-chip sb-status-online">● Model loaded</div>',
+            unsafe_allow_html=True,
+        )
     else:
-        st.error("Model unavailable")
+        st.markdown(
+            '<div class="sb-status-chip sb-status-error">● Model unavailable</div>',
+            unsafe_allow_html=True,
+        )
 
     st.markdown(
         f"""
-        **Architecture:** EfficientNetB2  
-        
-        **Input:** {IMG_SIZE} × {IMG_SIZE}  
-        
-        **Output:** Binary classification  
-        
-        **Threshold:** {NO_FIRE_THRESHOLD:.2f}
-        """
+        <div class="sb-card">
+            <p>🧠 <b>Architecture:</b> EfficientNetB2</p>
+            <p>📐 <b>Input:</b> {IMG_SIZE} × {IMG_SIZE}</p>
+            <p>🎯 <b>Output:</b> Binary classification</p>
+            <p>⚖️ <b>Threshold:</b> {NO_FIRE_THRESHOLD:.2f}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
-    st.markdown("---")
+    st.divider()
 
-    st.markdown("### 📊 Classes")
+    st.markdown(
+        '<div class="sb-section-label"><span class="icon-chip-sm">📊</span> Classes</div>',
+        unsafe_allow_html=True,
+    )
 
     st.markdown(
         """
-        🔥 **Fire**  
-        🌲 **No Fire**
-        """
+        <div class="sb-class-pill">🔥 Fire</div>
+        <div class="sb-class-pill">🌲 No Fire</div>
+        """,
+        unsafe_allow_html=True,
     )
 
-    st.markdown("---")
+    st.divider()
 
-    st.caption(
-        "Local inference • TensorFlow / Keras"
+    st.markdown(
+        '<div class="sb-section-label"><span class="icon-chip-sm">⚙️</span> Runtime</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        """
+        <div class="sb-card">
+            <p>⚡ Local inference</p>
+            <p>🧩 TensorFlow / Keras</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
 
